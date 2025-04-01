@@ -1,0 +1,12 @@
+Proyecto final:
+
+Interfaz web con 4 opciones
+
+Rutas:
+	/Resumen
+	/Responder preguntas
+	/Traduccion
+	/Generar preguntas
+Flask -> Servidor
+Google T5
+
