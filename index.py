@@ -4,7 +4,7 @@ from transformers import T5Tokenizer, T5ForConditionalGeneration
 app = Flask(__name__)
 
 # Cargar el modelo T5
-nombre_modelo = "t5-large"
+nombre_modelo = "t5-base"
 tokenizer = T5Tokenizer.from_pretrained(nombre_modelo)
 modelo = T5ForConditionalGeneration.from_pretrained(nombre_modelo)
 
