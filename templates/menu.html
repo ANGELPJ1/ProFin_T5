@@ -4,22 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tarjetas con Bootstrap</title>
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
     <style>
       body {
+        background-image: url('../static/images/uni.gif'); /* Cambia la URL a la imagen que desees */
+        background-size: cover;
+        background-position: center;
+        color: white;
         overflow: hidden;
       }
+
       #loading {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: white;
+        background: rgb(0, 0, 0);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -27,6 +32,7 @@
         text-align: center;
         font-family: Arial, sans-serif;
       }
+
       .spinner {
         width: 50px;
         height: 50px;
@@ -36,6 +42,7 @@
         animation: spin 1s linear infinite;
         margin-bottom: 15px;
       }
+
       @keyframes spin {
         from {
           transform: rotate(0deg);
@@ -44,24 +51,60 @@
           transform: rotate(360deg);
         }
       }
+
       .card {
         display: flex;
+        padding: 5px;
+        margin-right: 50px;
         flex-direction: column;
         height: 100%;
+        background: #ffffffb2;
+        color: black;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        width: 280px; /* Cambia el tamaño de la tarjeta */
       }
+
       .card-body {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        
       }
+
       .btn {
         width: 100%;
         margin-top: auto;
+        padding: 10px;
+        background-color: #007bff;
+        border: none;
+        color: rgb(0, 0, 0);
+        border-radius: 5px;
+        font-weight: bold;
+      }
+
+      #content {
+        max-height: 100vh;
+        overflow-y: scroll; /* Habilita el scroll vertical sin barra visible */
+        padding: 10px;
+        margin: 10;
+        padding-bottom: 50px;
+      }
+
+      #content::-webkit-scrollbar {
+        display: none; /* Oculta la barra de desplazamiento */
+      }
+
+      #content {
+        -ms-overflow-style: none;  /* Para IE y Edge */
+        scrollbar-width: none; /* Para Firefox */
       }
     </style>
+     
   </head>
-  <body>
+  <body background="../static/images/uni.gif">
     <div id="loading">
       <div class="spinner"></div>
       <h2>Cargando...</h2>
@@ -106,16 +149,29 @@
             </div>
           </div>
         </div>
+      </div>
+      <!-- Segunda fila de tarjetas (2 abajo) -->
+      <div class="row justify-content-center mt-3">
         <div class="col-md-3">
           <div class="card">
-            <img src="{{ url_for('static', filename='images/p.jpg') }}" class="card-img-top" alt="Imagen 4" />
+            <img src="../static/images/R.jpeg" class="card-img-top" alt="Imagen 4" />
             <div class="card-body">
               <h5 class="card-title">Genera preguntas</h5>
               <p class="card-text">
                 Introduce un texto y el modelo generara preguntas con esa
                 informacion
               </p>
-              <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#preguntarModal">Ver más</button>
+              <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#preguntarModal1">Ver más</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card">
+            <img src="../static/images/O.jpeg" class="card-img-top" alt="Imagen 5" />
+            <div class="card-body">
+              <h5 class="card-title">Generar imagen</h5>
+              <p class="card-text">Genera una imagen con una descripción</p>
+              <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#imagenModal">Ver más</button>
             </div>
           </div>
         </div>
@@ -158,6 +214,24 @@
         </div>
     </div>
 
+    <div class="modal fade" id="preguntarModal1" tabindex="-1">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Preguntar al Modelo</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                  <input type="text" id="pregunta1" class="form-control mb-2" placeholder="Ingrese el numero de preguntas">
+                  <textarea id="contexto" class="form-control" placeholder="Ingrese el contexto"></textarea>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-secondary" onclick="procesar('preguntar')">Preguntar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
     <div class="modal fade" id="resumirModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -174,6 +248,23 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="imagenModal" tabindex="-1">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Imagen</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                  <textarea id="imagen" class="form-control" placeholder="Ingrese la descripcion de la imagen a generar"></textarea>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-success" onclick="procesar('generar')">Generar imagen </button>
+              </div>
+          </div>
+      </div>
+  </div>
 
     <script>
         function procesar(accion) {
